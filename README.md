@@ -1,6 +1,6 @@
 ## Como fazer a instalação.
 
-Instalar o XAMPP na ultima vesão(8.2.12) e instalar o Composer na ultima versão(2.7.7).
+Instalar o XAMPP na ultima vesão(8.2.12), instalar o laravel na maquina `composer global require laravel/installer` e instalar o Composer na ultima versão(2.7.7).
 
 ## Como Rodar e utilizar a aplicação.
 
