@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Repositories\CarneRepository;
+use App\Repositories\CarneRepositoryInterface;
 use Carbon\Carbon;
 use Exception;
 
-class CarneService
+class CarneService implements  CarneServiceInterface
 {
     protected $carneRepository;
 
-    public function __construct(CarneRepository $carneRepository)
+    public function __construct(CarneRepositoryInterface $carneRepository)
     {
         $this->carneRepository = $carneRepository;
     }
@@ -20,7 +20,6 @@ class CarneService
     {
 
         $carne = $this->carneRepository->create($data);
-        event(new CarneRepository($carne));
         return $this->calculateParcelas($carne);
     }
 
@@ -47,7 +46,7 @@ class CarneService
             throw new Exception('Quantidade de parcelas deve ser maior que zero.');
         }
 
-        $valor_parcela = ($carne->valor_total - $carne->valor_entrada) / $carne->qtd_parcelas;
+        $valor_parcela = ($carne->valor_total - $carne->valor_entrada) / ($carne->qtd_parcelas-1);
 
         for ($i = 1; $i <= $carne->qtd_parcelas; $i++) {
             $parcelas[] = $this->createParcela($data_vencimento, $carne, $i, $valor_parcela);
@@ -85,3 +84,4 @@ class CarneService
         ];
     }
 }
+

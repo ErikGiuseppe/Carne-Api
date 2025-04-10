@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Carne;
 
-class CarneRepository
+class CarneRepository implements  CarneRepositoryInterface
 
 {
     public function find($id)

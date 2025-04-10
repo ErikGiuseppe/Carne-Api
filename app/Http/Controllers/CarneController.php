@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CarneService;
+use App\Services\CarneServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
@@ -12,13 +12,14 @@ class CarneController extends Controller
 
 {
     protected $carneService;
-    public function __construct(CarneService $carneService)
+    public function __construct(CarneServiceInterface $carneService)
     {
         $this->carneService = $carneService;
     }
 
     public function store(Request $request)
     {
+        try {
         $validated = $request->validate([
             'data_primeiro_vencimento' => 'required|date',
             'valor_total' => 'required|numeric',
@@ -27,7 +28,6 @@ class CarneController extends Controller
             'periodicidade' => 'required|in:mensal,semanal',
         ]);
 
-        try {
             $result = $this->carneService->registerCarne($validated);
             return response()->json($result, 201);
         } catch (ValidationException $e) {
@@ -45,4 +45,5 @@ class CarneController extends Controller
             return response()->json(['error' => $e->getMessage()], 404);
         }
     }
+
 }
